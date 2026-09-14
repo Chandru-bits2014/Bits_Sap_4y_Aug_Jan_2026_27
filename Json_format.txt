@@ -1,0 +1,7 @@
+ {
+        "studId": 1,
+        "studName": "Harshith Verma",
+        "studMail": "harshit@gmail.com",
+        "course": "MCA",
+        "avgScore": 85
+    }
