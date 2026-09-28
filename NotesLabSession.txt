@@ -1,0 +1,343 @@
+SERVER edit
+GraphQL Project Demo Path
+C:\Training2020-21\Training2020-21-22\BITS\BITS-FSAD_ProjDis_Feb_01_2025\FSAD_Feb_To_Jun_2025_SAP\Contact_Sessions\Demos\GraphicQL\inventoryservice
+
+
+				/Region
+	http://localhost:8080/employees/getEmployee  [empId,empName,empAddress,empSalary,empDesignation,empDepartment,empProject]
+	|
+		-----dept1 endpoit
+		----- dept2 endpoint
+DTO data Transfer Objects [Class 10 -   5 ]
+		
+		
+
+
+
+
+		http://localhost:8080/employees/saveEmployee
+
+			http://localhost:8080/employees/deleteEmployee
+
+
+empId,
+empName,
+empAddress,
+empSalary,
+empDesignation,empDepartment,empProject]
+
+
+GRAPH QL -
+===========================
+REST API
+ -- web/springdatajpa/graphQL/mysqldriver/lombok
+
+-------
+src
+- [controller/repository/service/model]
+Resources
+- application.properties
+-GraphQL
+---- schema2.graphqls------------------
+
+types
+
+
+type Employee {
+ id : ID
+name : String
+address : String
+salary : Float
+tax : Int
+}
+
+type query{
+	getEmployees:[Employee]
+	getEmployeeById(id:ID):Employee
+
+
+}
+type mutation{
+	saveEmployee(id:ID,name:String,,,):Employee
+	updateEmployee(id:ID,salary:int):Employee
+
+}
+
+
+
+@Id
+int empId;
+--------------------------------
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController
+{
+
+	@Autowired
+	EmployeeService empSvc;
+	@GetMapping("/all")
+	List <Employee> getEmployees()
+	{
+		return empSvc.getAll();
+
+	}
+	@GetMapping(/getByid{id})
+	Employee getEmployeeById(@PathVariable int id)
+	{
+
+		return empSvc.getEmpById(id);
+	}
+
+	@PostMapping("/saveEmpl")
+	public Employee saveEmployee(@RequestBody Employee emp)
+	{
+
+		return empSvc.saveEmp(emp)
+	}
+	
+}
+=======================
+GRAPHQL
+
+Query   - get
+Mutation - updation/insertion
+SUbscription - Notification
+
+@Controller
+public class EmployeeController
+{
+
+	@Autowired
+	EmployeeService empSvc;
+	@QueryMapping
+	List <Employee> getEmployees()
+	{
+		return empSvc.getAll();
+
+	}
+
+	@QueryMapping
+	Employee getEmployeeById(@Argument int id)
+	{
+		return empSvc.getById(id)
+	}
+
+	@MutationMapping
+	public Employee saveEmployee(@Argument int id,@Argument String empName,@Argument String empAddrs)
+	{
+		Employee e = new Employee(id,empName,empAddrs)
+		return empSvc.saveEmp(e);
+	}
+
+	@MutationMapping
+	public Employee updateEmployee(@Argument int id,@Argument int salary)
+	{
+
+		return empSvc.updateEmployee(id,salary)
+	}
+
+
+}
+======
+schema define structure [type query/mutation/subscription]
+Controller
+
+
+=======
+{
+  "query": "{ getAllProducts { id name price } }"
+}
+
+{
+  "query": "query { getProductsByCategory(category: \"Electronics\") { id name category price } }"
+}
+
+UPDATE:
+{
+  "query": "mutation { updateStock(id: 1, stock: 900) { id name category price stock } }"
+}
+
+RECEIVE
+{
+  "query": "mutation { receiveShipment(id: 1, quantity: 20) { id name category price stock } }"
+}
+{
+  "query": "mutation { receiveShipment(id: 16, quantity: 20) { id name category price stock } }"
+}
+
+SAVE
+{
+  "query": "mutation { saveProduct(name: \"Washing Machine\", category: \"Home Appliance\", price: 55000.0, stock: 25) { id name category price stock } }"
+}
+
+DELETE
+{
+  "query": "mutation { deleteProductById(id: 16) { id name category price stock } }"
+}
+
+You can use tools such as:
+
+GraphQl
+Postman
+GraphiQL
+Altair
+Apollo Sandbox (depending on your setup)
+
+For testing, Postman is particularly convenient.
+
+========
+			REST COntroller - Regular
+
+@RestController
+@RequestMapping("/employees")
+class EmployeesController
+{
+
+@Autowired
+EmployeeService empSvc;
+
+@GetMapping("/all")
+public List <Employees> getAllEmployees()
+{
+	return empSvc.getAllEmployeesSvc();
+
+}
+
+@GetMapping("/byId/{id}")
+public Employee getEmpById(@PathVariable int id)
+{
+	return empSvc.getEmployeeByIdSvc(id);     /http://localhost:8080/employees/byId/2
+}
+
+@PostMapping("/save")
+public Employee saveEmployee(@RequestBody Employee employee)
+{
+	return empSvc.saveEmployeeSvc(employee);
+
+}
+
+@DeleteMapping("/del/{id}")
+public Employee deleteEmployee(@PathVariable int id)
+{
+	return empSvc.delEmployeeSvc(id)
+}
+
+@PutMapping("/update/{id}")
+public Employee updateEmployee(@RequestBody Employe e,@PathVariable int id )
+{
+	return empSvc.updateEmployeeSvc(id,e)
+}
+
+}
+xxxxxxxxxxxxxxXXXXXxxxxxxxxxxxxxxxXXXXXxxxxxxxxxxxxxxxXXXXXxxxxxxxxxxxxxxxXXXXXx
+			GRAPHQL [Filter]
+
+@Controller
+class EmployeeControllerGql
+{
+	@QueryMapping // DQL
+	public List <Employees> getAllEmployees()
+	{
+	return empSvc.getAllEmployeesSvc();
+
+	}
+
+	@QueryMapping
+	public Employee getEmployeeById(@Argument int id)
+	{
+		return empSvc.getEmployeeByIdSvc(id);
+	} 
+//GRAPHQL UI [x,y,z]
+	@MutationMapping // Insertion/Updation /Deletion - DML
+	public Employee saveEmployee(@Argument String empName,@Argument String empAddress,@Argument int salary)
+	{
+//id 
+	Employee e = new Employee(empName,empAddress,salary)
+	return empSvc.saveEmployeeSvc(employee);
+
+	}
+
+	@MutationMapping
+	public Employee deleteEmployee(@Argument int id)
+	{
+		return empSvc.delEmployeeSvc(id)
+	}
+
+	@MutationMapping
+	public Employee updateEmployee(@Argument int id,@Argument String dept)
+	{
+	return empSvc.updateEmployeeSvc(id,dept)
+	}
+
+
+}
+-----SCHEMA
+
+graphql
+|-------- mygraphql.graphqls
+
+Master Entity
+type Employee
+{
+	id : ID
+	name : String
+	address : String
+	salary :Float
+	tax :Double
+
+}
+
+type query
+{
+	getAllEmployees():[Employee]
+	getEmployeeById(id:ID):Employee
+}
+
+type mutation
+{
+	saveEmployee(String empName,StringempAddress,String empPhone):Employee
+	updateEmployee(ID id,String empDept):Employee
+}
+
+xxxxxxxxxxxxXXXxxxxxxxxxxxxxxxxxxxxxxxXXXxxxxxxxxxxxxxxxxxxxxxxxXXXxxxxxxxxxxxxxxxxxxxxxxxXXXxxxxxxxxxxx
+
+	SWAGGER   vs POSTMAN --- exam perspective
+	DOC		TEST API
+	- contact
+	- help site
+	-
+	Test API
+---------
+DEMO  SPRINGBOOT automates confgn of the following effectively VS SPRING MVC[manual implementation is required]
+	- Swagger
+	- COnfigure multiple .properties  [dev/prod/uat]  Nothing to do from exam perspective
+	- Pagination/Search
+	- Actuator - Metrics
+
+CRUDRepository - basic crud
+|
+JpaRepository - basic crud + pagination + search 
+ORM
+SPringDataJPA  Hibernate  SpringJDBC | toplink /ejb/ ------> jdbc
+ highest                med auto   least auto
+		hql
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
